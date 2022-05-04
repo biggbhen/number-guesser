@@ -27,41 +27,41 @@ UImaxNum.textContent = max;
 UIguessBtn.addEventListener('click', function () {
   let guess = Number(UIguessInput.value);
   if (guess < min || guess > max) {
-    setMessage(`please enter a number between ${min} and ${max} `, 'red');
+    gameOver(false, `please enter a number between ${min} and ${max} `);
   }
 
   // check if won
   if (guess === winningNum) {
     // gameover Won!
-    // disble input
-    UIguessInput.disabled = true;
-    UIguessInput.style.borderColor = 'green';
-    setMessage(`${winningNum} is correct, YOU WIN!`, 'green');
+    gameOver(true, `${winningNum} is correct, YOU WIN!`);
   } else {
     guessesLeft -= 1;
 
     if (guessesLeft === 0) {
       // game over you lost
-      UIguessInput.disabled = true;
-      UIguessInput.style.borderColor = 'red';
-      setMessage(
-        `Game over, YOU Lost!. The correct number was ${winningNum}`,
-        'red'
+      gameOver(
+        false,
+        `Game over, YOU Lost!. The correct number was ${winningNum}`
       );
     } else {
       // game continues answer is wrong
-      UIguessInput.style.borderColor = 'red';
+      UIguessInput.style.borderColor = 'color';
       // clear guess input
       UIguessInput.value = '';
-      setMessage(
-        `${guess} is not Correct!, ${guessesLeft} guesses left`,
-        'red'
-      );
+
+      gameOver(false, `${guess} is not Correct!, ${guessesLeft} guesses left`);
     }
   }
 });
 
-function setMessage(msg, color) {
+function gameOver(won, msg) {
+  let color;
+  won === true ? (color = 'green') : (color = 'red');
+  // disble input
+  if (won === true) {
+    UIguessInput.disabled = true;
+  }
+  UIguessInput.style.borderColor = 'color';
   UImessage.textContent = msg;
   UImessage.style.color = color;
 }
